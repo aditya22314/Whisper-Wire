@@ -11,6 +11,14 @@ export const authOptions:NextAuthOptions = {
 adapter:PrismaAdapter(prisma),
 secret: process.env.NEXTAUTH_SECRET,
 session: { strategy: "database"},
+callbacks: {
+  async session({ session, user }) {
+    if (session.user) {
+      session.user.id = user.id;
+    }
+    return session;
+  },
+},
 providers:[
     CredentialProvider({
         name: "Credentials",
