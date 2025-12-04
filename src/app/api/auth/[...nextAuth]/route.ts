@@ -10,7 +10,14 @@ import NextAuth from "next-auth/next";
 export const authOptions:NextAuthOptions = {
 adapter:PrismaAdapter(prisma),
 secret: process.env.NEXTAUTH_SECRET,
-session: { strategy: "database"},
+session: { 
+  strategy: "database",
+  maxAge: 7 * 24 * 60 * 60, // 30 days in seconds (default)
+  // You can change this to:
+  // maxAge: 24 * 60 * 60, // 1 day
+  // maxAge: 7 * 24 * 60 * 60, // 7 days
+  // maxAge: 60 * 60, // 1 hour (for testing)
+},
 callbacks: {
   async session({ session, user }) {
     if (session.user) {
